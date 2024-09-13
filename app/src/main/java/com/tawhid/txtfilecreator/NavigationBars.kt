@@ -16,6 +16,8 @@ import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -70,9 +72,9 @@ fun NavigationBars() {
             badgeCount = 99
         ),
         BottomNavigationItem(
-            title = "Favorites",
-            selectedIcon = painterResource(id = R.drawable.favorite_filled),
-            unselectedIcon = painterResource(id = R.drawable.favorite_outline),
+            title = "Pins",
+            selectedIcon = painterResource(id = R.drawable.pin_filled),
+            unselectedIcon = painterResource(id = R.drawable.pin_outline),
             hasNews = true,
         ),
     )
@@ -80,12 +82,12 @@ fun NavigationBars() {
         mutableStateOf(0)
     }
 
-    Surface (
+    Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
     ) {
         val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
-        Scaffold (
+        Scaffold(
             modifier = Modifier
                 .fillMaxSize()
                 .nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -131,37 +133,40 @@ fun NavigationBars() {
                                 Text(text = item.title)
                             },
                             icon = {
-                                Icon(
-                                    painter = if (index == selectedItemIndex) {
-                                        item.selectedIcon
-                                    } else item.unselectedIcon,
-                                    contentDescription = item.title
-                                )
-                                /*
                                 BadgedBox(
                                     badge = {
-                                        if(item.badgeCount != null) {
+                                        if (item.badgeCount != null) {
                                             Badge {
-                                                Text(text = item.badgeCount.toString())
+                                                Text(text = item.badgeCount.toString()+"+")
                                             }
-                                        } else if(item.hasNews) {
+                                        } else if (item.hasNews) {
                                             Badge()
                                         }
                                     }
                                 )
-                                 */
+                                {
+                                    Icon(
+                                        painter = if (index == selectedItemIndex) {
+                                            item.selectedIcon
+                                        } else item.unselectedIcon,
+                                        contentDescription = item.title
+                                    )
+                                }
                             }
                         )
                     }
                 }
             },
 
-        ) { values->
-            LazyColumn(modifier = Modifier
-                .fillMaxSize()
-                .padding(values)) {
-                items(100) {it->
-                    Text(modifier = Modifier.padding(15.dp),
+            ) { values ->
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(values)
+            ) {
+                items(100) { it ->
+                    Text(
+                        modifier = Modifier.padding(15.dp),
                         text = "item $it",
                         fontSize = 18.sp
                     )
