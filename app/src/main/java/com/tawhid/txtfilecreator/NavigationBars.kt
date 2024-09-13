@@ -15,7 +15,6 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -35,16 +34,18 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 data class BottomNavigationItem(
     val title: String,
-    val selectedIcon: ImageVector,
-    val unselectedIcon: ImageVector,
+    val selectedIcon: Painter,
+    val unselectedIcon: Painter,
     val hasNews: Boolean,
     val badgeCount: Int? = null
 )
@@ -57,21 +58,21 @@ fun NavigationBars() {
     val items = listOf(
         BottomNavigationItem(
             title = ".txtEditor",
-            selectedIcon = Icons.Filled.Edit,
-            unselectedIcon = Icons.Outlined.Edit,
+            selectedIcon = painterResource(id = R.drawable.edit_txt),
+            unselectedIcon = painterResource(id = R.drawable.edit_txt),
             hasNews = false,
         ),
         BottomNavigationItem(
             title = ".txtFiles",
-            selectedIcon = Icons.Filled.Info,
-            unselectedIcon = Icons.Outlined.Info,
+            selectedIcon = painterResource(id = R.drawable.text_file_filled),
+            unselectedIcon = painterResource(id = R.drawable.text_file_outline),
             hasNews = false,
             badgeCount = 99
         ),
         BottomNavigationItem(
-            title = "Settings",
-            selectedIcon = Icons.Filled.Settings,
-            unselectedIcon = Icons.Outlined.Settings,
+            title = "Favorites",
+            selectedIcon = painterResource(id = R.drawable.favorite_filled),
+            unselectedIcon = painterResource(id = R.drawable.favorite_outline),
             hasNews = true,
         ),
     )
@@ -131,7 +132,7 @@ fun NavigationBars() {
                             },
                             icon = {
                                 Icon(
-                                    imageVector = if (index == selectedItemIndex) {
+                                    painter = if (index == selectedItemIndex) {
                                         item.selectedIcon
                                     } else item.unselectedIcon,
                                     contentDescription = item.title
