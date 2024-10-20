@@ -3,48 +3,43 @@ package com.tawhid.txtfilecreator
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.Divider
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.tawhid.txtfilecreator.ui.theme.TxtFileCreatorTheme
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.tawhid.txtfilecreator.presentation.components.BottomNavigationBar
+import com.tawhid.txtfilecreator.presentation.components.TopBar
+import com.tawhid.txtfilecreator.presentation.screens.TextEditor
+import com.tawhid.txtfilecreator.presentation.screens.TextFiles
+import com.tawhid.txtfilecreator.presentation.screens.TextPins
+import com.tawhid.txtfilecreator.presentation.util.Screens
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            TxtFileCreatorTheme {
-                NavigationBars()
-            }
+            MainScreen()
         }
     }
 }
-
-@Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
-    TxtFileCreatorTheme {
-        NavigationBars()
+fun MainScreen() {
+    val navController = rememberNavController()
+    Scaffold(
+        topBar = { TopBar() },
+        bottomBar = { BottomNavigationBar(navController) }
+    ) { innerPadding ->
+        NavHost(
+            navController = navController,
+            startDestination = Screens.TextFiles.screen,
+            modifier = Modifier.padding(innerPadding)
+        ) {
+            composable(Screens.TextEditor.screen) { TextEditor() }
+            composable(Screens.TextFiles.screen) { TextFiles() }
+            composable(Screens.TextPins.screen) { TextPins() }
+        }
     }
 }
-
